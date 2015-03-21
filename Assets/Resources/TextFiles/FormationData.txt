@@ -1,0 +1,17 @@
+{
+  "data" :
+  {
+    "JSONData" :
+    [
+      {
+        "numNodes" : 1,
+        "posList" :
+        {
+          "xPos" : 0,
+          "yPos" : 1,
+          "zPos" : 0
+        }
+      }
+    ]
+  }
+}
