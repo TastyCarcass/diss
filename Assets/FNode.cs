@@ -5,14 +5,30 @@ public class FNode : MonoBehaviour, IIdentification
 {
 	private int ID;
 
+	public void DragEnded(InputEventArgs e)
+	{
+		FinishedMoving ();
+	}
+
+	public void Cancelled(InputEventArgs e)
+	{
+		FinishedMoving ();
+	}
+
+	private void FinishedMoving()
+	{
+		GetComponentInParent<Formation> ().UpdateFormationUnit (ID, transform.localPosition);
+	}
+
 	public void OnDrag(InputEventArgs e)
 	{
-		Vector2 moved = e.touchObject.deltaPosition;
-		Vector3 movedBy = new Vector3(moved.x, 0, moved.y);
+		Vector2 moved = e.touchObject.position;
+		Debug.LogError ("OLA: " + moved);
+		Vector3 worldPos = Camera.main.ScreenToWorldPoint (moved);
+		Vector3 localPos = transform.parent.InverseTransformPoint (worldPos);
+		localPos.y = 1;
 
-		movedBy += transform.localPosition;
-
-		transform.localPosition = movedBy;
+		transform.localPosition = localPos;
 	}
 
 	public void SetUniqueID(int newID)

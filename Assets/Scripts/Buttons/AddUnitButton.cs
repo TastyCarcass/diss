@@ -15,10 +15,15 @@ public class AddUnitButton : MonoBehaviour
 		if(!NewUnitMode)
 		{
 			NewUnitMode = true;
+
+			editCam.gameObject.SetActive (true);
+			mainCam.gameObject.SetActive (false);
 		}
 		else 
 		{
 			NewUnitMode = false; 
+			editCam.gameObject.SetActive (false);
+			mainCam.gameObject.SetActive (true);
 		}
 	}
 
@@ -31,22 +36,6 @@ public class AddUnitButton : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		//Mode Checks
-		if(NewUnitMode)
-		{
-			if(mainCam.gameObject.active)
-			{
-				editCam.gameObject.SetActive (true);
-				mainCam.gameObject.SetActive (false);
-			}
-		}
-		else
-		{
-			if(editCam.gameObject.active)
-			{
-				editCam.gameObject.SetActive (false);
-				mainCam.gameObject.SetActive (true);
-			}
-		}
+
 	}
 }

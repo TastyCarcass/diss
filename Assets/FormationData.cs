@@ -6,10 +6,9 @@ using System.IO;
 
 public class FormationData
 {
+	private static string path = Application.persistentDataPath;
 
-	private static string dataPath = "Assets/Resources/TextFiles/FormationData.txt";
-
-	private static List<FormationModel> fData = new List<FormationModel>();
+	private static string dataPath = path + "FormationData.txt";
 
 	private static Dictionary<int, List<List<FormationModel.positionData>>> formations;
 
@@ -21,6 +20,7 @@ public class FormationData
 		{
 			if(formations == null)
 			{
+				Debug.Log(Application.persistentDataPath);
 				formations = new Dictionary<int, List<List<FormationModel.positionData>>>();
 				LoadFormations();
 			}
@@ -28,7 +28,16 @@ public class FormationData
 		}
 	}
 
-	public static void AddNewFormation(FormationModel newFormation)
+	public static void UpdateFormation(int numUnitsIndex, int posIndex, List<FormationModel.positionData> posList)
+	{
+		List<List<FormationModel.positionData>> toUpdate = formations [numUnitsIndex];
+		toUpdate [posIndex] = posList;
+
+		SaveFormations ();
+	}
+
+	// Returns the index of the newly added formation.
+	public static int AddNewFormation(FormationModel newFormation)
 	{
 		if (!formations.ContainsKey(newFormation.numNodes))
 		{
@@ -37,15 +46,16 @@ public class FormationData
 
 		formations [newFormation.numNodes].Add (newFormation.posList);
 
-		fData.Add (newFormation);
-
 		SaveFormations ();
+
+		return formations [newFormation.numNodes].Count - 1;
 	}
 
-	public static void DeleteFormation(FormationModel toDelete)
+	public static void DeleteFormation(int numUnitsIndex, int position)
 	{
-		// TODO: Fill this in.
-		Debug.LogError ("Not implemented: DeleteFormation (FormationData.cs)");
+		List<List<FormationModel.positionData>> toUpdate = formations [numUnitsIndex];
+		toUpdate.RemoveAt (position);
+
 		SaveFormations ();
 	}
 
@@ -54,28 +64,21 @@ public class FormationData
 		if (File.Exists(dataPath))
 		{
 			string data = File.ReadAllText (dataPath);
-			FormationModel[] ourData = JsonConvert.DeserializeObject<FormationModel[]> (data);
-			fData = new List<FormationModel>(ourData);
-			Debug.Log("fData: " + fData.Count);
+
+			formations = JsonConvert.DeserializeObject<Dictionary<int, List<List<FormationModel.positionData>>>>(data);
 		}
 		else
 		{
-			throw new FileNotFoundException();
-		}
-		foreach(FormationModel cModel in fData)
-		{
-			if(!formations.ContainsKey(cModel.numNodes))
-			{
-				formations.Add(cModel.numNodes, new List<List<FormationModel.positionData>>());
-			}
-			
-			formations[cModel.numNodes].Add(cModel.posList);
+			AddTestFormation();
+			LoadFormations();
 		}
 	}
 
 	public static void AddTestFormation()
 	{
 		FormationModel nf = new FormationModel ();
+
+		nf.id = "testformation";
 
 		nf.numNodes = 1;
 		nf.posList = new List<FormationModel.positionData> ();
@@ -92,8 +95,7 @@ public class FormationData
 
 	public static void SaveFormations()
 	{
-		string toSave = JsonConvert.SerializeObject (fData);
-
+		string toSave = JsonConvert.SerializeObject (formations);
 		File.WriteAllText(dataPath, toSave);
 	}
 }

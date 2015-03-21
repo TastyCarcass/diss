@@ -7,7 +7,7 @@ public class DebugWindow : MonoBehaviour {
 
 	void OnGUI()
 	{
-		GUI.Button (new Rect (10, 10, 400, 100), ourText);
+		GUI.Button (new Rect (10, 10, 1200, 100), ourText);
 	}
 	// Use this for initialization
 	void Start () {

@@ -45,9 +45,6 @@ public class TouchCast : MonoBehaviour
 		ListCamera.OrderBy (Cam => Cam.depth );
 		ListCamera.Reverse ();
 
-		foreach(Camera cam in ListCamera)
-		{
-		}
 		initialised = true;
 
 
@@ -116,7 +113,6 @@ public class TouchCast : MonoBehaviour
 
 				foreach(Camera cam in ListCamera)
 				{
-					Debug.Log(cam.gameObject.name);
 					if (cam.gameObject.activeSelf == false) continue;
 					Ray ray = cam.ScreenPointToRay (ourTouch.position);
 					RaycastHit hit;
@@ -125,11 +121,6 @@ public class TouchCast : MonoBehaviour
 
 					if(Physics.Raycast (ray, out hit, Mathf.Infinity, touchMask))
 					{
-//						DebugWindow.ourText = "Camera hit: " + cam.gameObject.name + "\n";
-//						DebugWindow.ourText += "Object hit: " + hit.collider.name;
-//						Debug.Log ("Camera hit " + cam.gameObject.name);
-//						Debug.Log ("Object hit " + hit.collider.name);
-
 						// We need to handle our logic for sending out events, etc.
 						InputEventArgs e = new InputEventArgs();
 						e.hitObject = hit.collider.gameObject;
@@ -159,6 +150,7 @@ public class TouchCast : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("No touch recognised");
 					}
 				}
 			}

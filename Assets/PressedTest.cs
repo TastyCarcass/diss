@@ -3,12 +3,6 @@ using System.Collections;
 
 public class PressedTest : MonoBehaviour {
 
-//	void Pressed(InputEventArgs e)
-//	{
-//		DebugWindow.ourText = "Tadah";
-//		Debug.Log ("Press message recieved ");
-//	}
-
 	void DragEntered(InputEventArgs e)
 	{
 		Debug.Log ("Drag Entered");

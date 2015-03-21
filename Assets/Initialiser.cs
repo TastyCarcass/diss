@@ -10,9 +10,6 @@ public class Initialiser : MonoBehaviour
 
 	void Start () 
 	{
-		Dictionary<int, List<List<FormationModel.positionData>>> ola = FormationData.Formations;
-
-		FormationData.AddTestFormation ();
 		// TODO: Get last saved formation from prev. session and load.
 		// FORNOW: Just load any formation
 		int index = -1;
@@ -30,6 +27,6 @@ public class Initialiser : MonoBehaviour
 		Debug.Log (defaultFormation [0].yPos);
 		Debug.Log (defaultFormation [0].zPos);
 
-		formationRoot.SetFormation (defaultFormation);
+		formationRoot.SetFormation (0, defaultFormation);
 	}
 }

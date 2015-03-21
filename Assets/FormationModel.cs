@@ -11,6 +11,7 @@ public class FormationModel
 		public float zPos;
 	}
 
+	public string id;
 	public int numNodes;
 	public List<positionData> posList;
 }

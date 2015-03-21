@@ -1,25 +1,54 @@
 ﻿//Author: Ian McLeod
 //Purpose: The formation creation script. 
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 public class Formation : MonoBehaviour 
 {
 	private static int newUniqueIDNumber = 0;
+
     public Transform parentTrans;
     public FNode prefab;
-	public List<FormationModel.positionData> positionsList = new List<FormationModel.positionData>();
-	//System.Collections.Generic.List<GameObject> nodeList; //list of nodes 
-	public List<GameObject> nodeList = new List<GameObject> ();
 
-	public void SetFormation(List<FormationModel.positionData> formation)
+	private int numUnitsIndex = -1;
+	private int positionIndex = -1;
+
+	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
+	private List<FNode> nodesList = new List<FNode> ();
+
+	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
-		positionsList = new List<FormationModel.positionData> (formation);
-
-		foreach(FormationModel.positionData cData in positionsList)
+		if (_positionIndex != positionIndex)
 		{
-			AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
+			positionsList = new Dictionary<int, FormationModel.positionData>();
+			nodesList = new List<FNode>();
+			positionIndex = _positionIndex;
+			numUnitsIndex = formation.Count;
+
+			foreach(FormationModel.positionData cData in formation)
+			{
+				AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
+			}
+		}
+		else
+		{
+			positionIndex = _positionIndex;
+
+			List<FormationModel.positionData> cData = new List<FormationModel.positionData>();
+
+			foreach(FormationModel.positionData cData1 in positionsList.Values)
+			{
+				cData.Add(cData1);
+			}
+
+			for (int i = 0; i < cData.Count; i++)
+			{
+				cData[i] = formation[i];
+				Vector3 newPos = new Vector3(cData[i].xPos, cData[i].yPos, cData[i].zPos);
+				nodesList[i].transform.localPosition = newPos;
+			}
 		}
 	}
 
@@ -29,18 +58,57 @@ public class Formation : MonoBehaviour
 		return newUniqueIDNumber;
 	}
 
+	public void UpdateFormationUnit(int id, Vector3 newPos)
+	{
+		if (positionsList.ContainsKey(id))
+		{
+			positionsList[id].xPos = newPos.x;
+			positionsList[id].yPos = newPos.y;
+			positionsList[id].zPos = newPos.z;
+		}
+
+		List<FormationModel.positionData> newList = new List<FormationModel.positionData> ();
+
+		foreach(FormationModel.positionData cData in positionsList.Values)
+		{
+			newList.Add(cData);
+		}
+
+		if (numUnitsIndex == newList.Count)
+		{
+			FormationData.UpdateFormation (numUnitsIndex, positionIndex, newList);
+		}
+		else
+		{
+			FormationData.DeleteFormation(numUnitsIndex, positionIndex);
+
+			FormationModel newFormation = new FormationModel();
+			newFormation.numNodes = newList.Count;
+			newFormation.posList = newList;
+
+			int newIndex = FormationData.AddNewFormation(newFormation);
+
+			numUnitsIndex = newList.Count;
+			positionIndex = newIndex;
+		}
+	}
+
 	public void AddFormationUnit(Vector3 localPos)
 	{	
-		Debug.Log (localPos);
 		FNode buff = Instantiate(prefab) as FNode;
 		buff.transform.parent = parentTrans;
-		
-		nodeList.Add(buff.gameObject);  
-
-		// that's not going to work.
+	
 		buff.SetUniqueID(GetNewUniqueID());
 
 		buff.transform.localPosition = localPos;
+
+		FormationModel.positionData posData = new FormationModel.positionData ();
+		posData.xPos = localPos.x;
+		posData.yPos = localPos.y;
+		posData.zPos = localPos.z;
+
+		positionsList.Add(buff.GetUniqueID(), posData);
+		nodesList.Add (buff);
 	}
 
     public void AddNewUnit(Vector3 worldPos)
