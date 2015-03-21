@@ -7,8 +7,12 @@ public class Initialiser : MonoBehaviour
 	public Formation formationRoot;
 	public string SavedToken;
 	// Use this for initialization
+
 	void Start () 
 	{
+		Dictionary<int, List<List<FormationModel.positionData>>> ola = FormationData.Formations;
+
+		FormationData.AddTestFormation ();
 		// TODO: Get last saved formation from prev. session and load.
 		// FORNOW: Just load any formation
 		int index = -1;

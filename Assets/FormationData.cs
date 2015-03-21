@@ -7,9 +7,9 @@ using System.IO;
 public class FormationData
 {
 
-	private static string dataPath = "Assets/Resources/TextFiles/formationData.txt";
+	private static string dataPath = "Assets/Resources/TextFiles/FormationData.txt";
 
-	private static FormationModel[] fData;
+	private static List<FormationModel> fData = new List<FormationModel>();
 
 	private static Dictionary<int, List<List<FormationModel.positionData>>> formations;
 
@@ -37,6 +37,8 @@ public class FormationData
 
 		formations [newFormation.numNodes].Add (newFormation.posList);
 
+		fData.Add (newFormation);
+
 		SaveFormations ();
 	}
 
@@ -52,9 +54,9 @@ public class FormationData
 		if (File.Exists(dataPath))
 		{
 			string data = File.ReadAllText (dataPath);
-			FormationModel.Data ourData = JsonConvert.DeserializeObject<FormationModel.Data> (data);
-			fData = ourData.data.JSONData;
-			Debug.Log("fData: " + fData.Length);
+			FormationModel[] ourData = JsonConvert.DeserializeObject<FormationModel[]> (data);
+			fData = new List<FormationModel>(ourData);
+			Debug.Log("fData: " + fData.Count);
 		}
 		else
 		{
@@ -71,9 +73,26 @@ public class FormationData
 		}
 	}
 
+	public static void AddTestFormation()
+	{
+		FormationModel nf = new FormationModel ();
+
+		nf.numNodes = 1;
+		nf.posList = new List<FormationModel.positionData> ();
+
+		FormationModel.positionData data = new FormationModel.positionData ();
+		data.xPos = 1;
+		data.yPos = 1;
+		data.zPos = 1;
+
+		nf.posList.Add (data);
+
+		AddNewFormation (nf);
+	}
+
 	public static void SaveFormations()
 	{
-		string toSave = JsonConvert.SerializeObject (formations);
+		string toSave = JsonConvert.SerializeObject (fData);
 
 		File.WriteAllText(dataPath, toSave);
 	}

@@ -14,7 +14,7 @@ PlayerSettings:
   companyName: IanMcLeod
   productName: test
   cloudProjectId: 
-  defaultCursor: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
