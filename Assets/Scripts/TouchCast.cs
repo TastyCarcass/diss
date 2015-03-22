@@ -9,6 +9,7 @@ using AssemblyCSharp;
 
 public class TouchCast : MonoBehaviour 
 {
+	public AddUnitButton addUnitButton;
 	public LayerMask touchMask; // used for collisions, what 
 	//can and cannot be hit. 
 
@@ -44,6 +45,8 @@ public class TouchCast : MonoBehaviour
 
 		ListCamera.OrderBy (Cam => Cam.depth );
 		ListCamera.Reverse ();
+
+		addUnitButton.Initialise ();
 
 		initialised = true;
 

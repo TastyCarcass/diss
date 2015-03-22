@@ -28,9 +28,11 @@ public class AddUnitButton : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start () 
+	public void Initialise () 
 	{
 		NewUnitMode = false;
+		editCam.gameObject.SetActive (false);
+		mainCam.gameObject.SetActive (true);
 	}
 
 	// Update is called once per frame

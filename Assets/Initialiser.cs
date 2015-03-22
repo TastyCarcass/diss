@@ -16,17 +16,27 @@ public class Initialiser : MonoBehaviour
 
 		foreach(int s in FormationData.Formations.Keys)
 		{
-			index = s;
-			break;
+			if (FormationData.Formations[s].Count > 0)
+			{
+				index = s;
+				break;
+			}
 		}
 
-		List< List<FormationModel.positionData> > listOfFormations = FormationData.Formations[index];
-		List<FormationModel.positionData> defaultFormation = listOfFormations [0];
+		if (index != -1)
+		{
+			List< List<FormationModel.positionData> > listOfFormations = FormationData.Formations[index];
+			List<FormationModel.positionData> defaultFormation = listOfFormations [0];
 
-		Debug.Log (defaultFormation [0].xPos);
-		Debug.Log (defaultFormation [0].yPos);
-		Debug.Log (defaultFormation [0].zPos);
+			Debug.Log (defaultFormation [0].xPos);
+			Debug.Log (defaultFormation [0].yPos);
+			Debug.Log (defaultFormation [0].zPos);
 
-		formationRoot.SetFormation (0, defaultFormation);
+			formationRoot.SetFormation (0, defaultFormation);
+		}
+		else
+		{
+
+		}
 	}
 }

@@ -907,6 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6cfc6257d03e748aceec0af8fe06c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addUnitButton: {fileID: 531347480}
   touchMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1611,7 +1612,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentTrans: {fileID: 1892226314}
   prefab: {fileID: 11476920, guid: 940c4a1030fbfa54aac97ce6223456ff, type: 2}
-  nodeList: []
 --- !u!1 &1947463527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,7 +1667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2006701402
 MonoBehaviour:
   m_ObjectHideFlags: 0

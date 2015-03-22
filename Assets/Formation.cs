@@ -58,22 +58,15 @@ public class Formation : MonoBehaviour
 		return newUniqueIDNumber;
 	}
 
-	public void UpdateFormationUnit(int id, Vector3 newPos)
+	public void SaveFormationInfo()
 	{
-		if (positionsList.ContainsKey(id))
-		{
-			positionsList[id].xPos = newPos.x;
-			positionsList[id].yPos = newPos.y;
-			positionsList[id].zPos = newPos.z;
-		}
-
 		List<FormationModel.positionData> newList = new List<FormationModel.positionData> ();
-
+		
 		foreach(FormationModel.positionData cData in positionsList.Values)
 		{
 			newList.Add(cData);
 		}
-
+		
 		if (numUnitsIndex == newList.Count)
 		{
 			FormationData.UpdateFormation (numUnitsIndex, positionIndex, newList);
@@ -81,16 +74,29 @@ public class Formation : MonoBehaviour
 		else
 		{
 			FormationData.DeleteFormation(numUnitsIndex, positionIndex);
-
+			
 			FormationModel newFormation = new FormationModel();
 			newFormation.numNodes = newList.Count;
 			newFormation.posList = newList;
-
+			
 			int newIndex = FormationData.AddNewFormation(newFormation);
-
+			
 			numUnitsIndex = newList.Count;
 			positionIndex = newIndex;
 		}
+	}
+
+	public void UpdateFormationUnit(int id, Vector3 newPos)
+	{
+		if (positionsList.ContainsKey(id))
+		{
+			Debug.Log("Updating position of unreleased node");
+			positionsList[id].xPos = newPos.x;
+			positionsList[id].yPos = newPos.y;
+			positionsList[id].zPos = newPos.z;
+		}
+
+		SaveFormationInfo ();
 	}
 
 	public void AddFormationUnit(Vector3 localPos)
@@ -109,6 +115,8 @@ public class Formation : MonoBehaviour
 
 		positionsList.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
+
+		SaveFormationInfo ();
 	}
 
     public void AddNewUnit(Vector3 worldPos)
