@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Initialiser : MonoBehaviour
 {
+	public ScrollBar formationsBar;
 	public Formation formationRoot;
 	public string SavedToken;
 	// Use this for initialization
@@ -26,13 +27,11 @@ public class Initialiser : MonoBehaviour
 		if (index != -1)
 		{
 			List< List<FormationModel.positionData> > listOfFormations = FormationData.Formations[index];
-			List<FormationModel.positionData> defaultFormation = listOfFormations [0];
+			formationsBar.SetFormationEntries(listOfFormations);
 
-			Debug.Log (defaultFormation [0].xPos);
-			Debug.Log (defaultFormation [0].yPos);
-			Debug.Log (defaultFormation [0].zPos);
+			//List<FormationModel.positionData> defaultFormation = listOfFormations [0];
 
-			formationRoot.SetFormation (0, defaultFormation);
+			//formationRoot.SetFormation (0, defaultFormation);
 		}
 		else
 		{

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Standard Assets (Mobile)/Control Setups/CameraRelativeSetup.unity
+    path: Assets/Standard Assets/Standard Assets (Mobile)/Control Setups/CameraRelativeSetup.unity
   - enabled: 0
-    path: Assets/Standard Assets (Mobile)/Control Setups/TapControlSetup.unity
+    path: Assets/Standard Assets/Standard Assets (Mobile)/Control Setups/TapControlSetup.unity
   - enabled: 1
     path: Assets/mainscene.unity

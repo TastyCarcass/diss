@@ -78,19 +78,22 @@ public class FormationData
 	{
 		FormationModel nf = new FormationModel ();
 
-		nf.id = "testformation";
+		for (int i = 0; i < 15; i++)
+		{
+			nf.id = "testformation";
 
-		nf.numNodes = 1;
-		nf.posList = new List<FormationModel.positionData> ();
+			nf.numNodes = 1;
+			nf.posList = new List<FormationModel.positionData> ();
 
-		FormationModel.positionData data = new FormationModel.positionData ();
-		data.xPos = 1;
-		data.yPos = 1;
-		data.zPos = 1;
+			FormationModel.positionData data = new FormationModel.positionData ();
+			data.xPos = i;
+			data.yPos = i;
+			data.zPos = i;
 
-		nf.posList.Add (data);
+			nf.posList.Add (data);
 
-		AddNewFormation (nf);
+			AddNewFormation (nf);
+		}
 	}
 
 	public static void SaveFormations()
