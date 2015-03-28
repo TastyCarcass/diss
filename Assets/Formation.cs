@@ -20,8 +20,10 @@ public class Formation : MonoBehaviour
 
 	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
-		if (_positionIndex != positionIndex)
+		//If new formation does not have the same amount of units.
+		if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
 		{
+			Debug.Log("if");
 			positionsList = new Dictionary<int, FormationModel.positionData>();
 			nodesList = new List<FNode>();
 			positionIndex = _positionIndex;
@@ -34,6 +36,8 @@ public class Formation : MonoBehaviour
 		}
 		else
 		{
+			//If it has the same amount of units
+			Debug.Log("else");
 			positionIndex = _positionIndex;
 
 			List<FormationModel.positionData> cData = new List<FormationModel.positionData>();
@@ -78,9 +82,9 @@ public class Formation : MonoBehaviour
 			FormationModel newFormation = new FormationModel();
 			newFormation.numNodes = newList.Count;
 			newFormation.posList = newList;
-			
+
 			int newIndex = FormationData.AddNewFormation(newFormation);
-			
+
 			numUnitsIndex = newList.Count;
 			positionIndex = newIndex;
 		}
@@ -117,6 +121,12 @@ public class Formation : MonoBehaviour
 		nodesList.Add (buff);
 
 		SaveFormationInfo ();
+	}
+	public void DeleteFormationUnit(int otherID)
+	{
+
+
+
 	}
 
     public void AddNewUnit(Vector3 worldPos)

@@ -6,6 +6,7 @@ using System.IO;
 
 public class FormationData
 {
+	private static int defaultNumNodes = 1;
 	private static string path = Application.persistentDataPath;
 
 	private static string dataPath = path + "FormationData.txt";
@@ -53,6 +54,8 @@ public class FormationData
 
 	public static void DeleteFormation(int numUnitsIndex, int position)
 	{
+		if (numUnitsIndex == defaultNumNodes && position == 0) return;
+
 		List<List<FormationModel.positionData>> toUpdate = formations [numUnitsIndex];
 		toUpdate.RemoveAt (position);
 
@@ -69,31 +72,31 @@ public class FormationData
 		}
 		else
 		{
-			AddTestFormation();
+			SetDefaultFormation();
 			LoadFormations();
 		}
 	}
 
-	public static void AddTestFormation()
+	public static void SetDefaultFormation()
 	{
 		FormationModel nf = new FormationModel ();
 
-		for (int i = 0; i < 15; i++)
+		nf.numNodes = defaultNumNodes;
+		nf.posList = new List<FormationModel.positionData> ();
+
+		
+		for (int i = 0; i < defaultNumNodes; i++)
 		{
-			nf.id = "testformation";
-
-			nf.numNodes = 1;
-			nf.posList = new List<FormationModel.positionData> ();
-
 			FormationModel.positionData data = new FormationModel.positionData ();
-			data.xPos = i;
+
+			data.xPos = (-defaultNumNodes + (defaultNumNodes / 2)) + i;
 			data.yPos = i;
 			data.zPos = i;
 
 			nf.posList.Add (data);
-
-			AddNewFormation (nf);
 		}
+
+		AddNewFormation (nf);
 	}
 
 	public static void SaveFormations()

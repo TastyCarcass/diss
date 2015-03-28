@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FNode : MonoBehaviour, IIdentification
 {
-	private int ID;
+	public int ID;
 
 	public void DragEnded(InputEventArgs e)
 	{
