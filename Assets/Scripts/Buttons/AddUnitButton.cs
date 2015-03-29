@@ -7,7 +7,8 @@ public class AddUnitButton : MonoBehaviour
 
 	public Camera mainCam;
 	public Camera editCam;
-
+	public GameObject mainGUI;
+	public GameObject editGUI;
 
 	public void Pressed(InputEventArgs e)
 	{
@@ -17,13 +18,18 @@ public class AddUnitButton : MonoBehaviour
 			NewUnitMode = true;
 
 			editCam.gameObject.SetActive (true);
+			editGUI.gameObject.SetActive (true);
 			mainCam.gameObject.SetActive (false);
+			mainGUI.gameObject.SetActive (false);
 		}
 		else 
 		{
 			NewUnitMode = false; 
+
 			editCam.gameObject.SetActive (false);
+			editGUI.gameObject.SetActive (false);
 			mainCam.gameObject.SetActive (true);
+			mainGUI.gameObject.SetActive (true);
 		}
 	}
 
@@ -32,7 +38,9 @@ public class AddUnitButton : MonoBehaviour
 	{
 		NewUnitMode = false;
 		editCam.gameObject.SetActive (false);
+		editGUI.gameObject.SetActive (false);
 		mainCam.gameObject.SetActive (true);
+		mainGUI.gameObject.SetActive (true);
 	}
 
 	// Update is called once per frame

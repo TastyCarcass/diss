@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Formation : MonoBehaviour 
+public class Formation : MonoBehaviour, IFormation
 {
 	private static int newUniqueIDNumber = 0;
 
@@ -21,10 +21,17 @@ public class Formation : MonoBehaviour
 	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
 		//If new formation does not have the same amount of units.
-		if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
+		//if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
+		if(true)
 		{
-			Debug.Log("if");
 			positionsList = new Dictionary<int, FormationModel.positionData>();
+			for(int i = 0; i<nodesList.Count; i++)
+			{
+				GameObject obj = nodesList[i].gameObject;
+				nodesList[i] = null;
+				Destroy (obj);
+			}
+
 			nodesList = new List<FNode>();
 			positionIndex = _positionIndex;
 			numUnitsIndex = formation.Count;
@@ -37,7 +44,6 @@ public class Formation : MonoBehaviour
 		else
 		{
 			//If it has the same amount of units
-			Debug.Log("else");
 			positionIndex = _positionIndex;
 
 			List<FormationModel.positionData> cData = new List<FormationModel.positionData>();
@@ -122,12 +128,6 @@ public class Formation : MonoBehaviour
 
 		SaveFormationInfo ();
 	}
-	public void DeleteFormationUnit(int otherID)
-	{
-
-
-
-	}
 
     public void AddNewUnit(Vector3 worldPos)
 	{
@@ -143,54 +143,21 @@ public class Formation : MonoBehaviour
         
     }
 
-    void DeleteUnit()
-    {
-    }
-
-	/*
-	// Use this for initialization
-	void Start () 
+	public List<FormationModel.positionData> Export(bool asNew)
 	{
-		//nodeArr = new GameObject[nodeCount];
-		//For debug
-		nodeCount = 16;
-		lineCount = 4;
-		space = 2;
-		//For loop for initial creation
-		for (numUnits = 0; numUnits < nodeCount; numUnits++) 
+		if (asNew) 
 		{
-			FNode buff = Instantiate (prefab) as FNode;
-			buff.transform.parent = parentTrans;
-
-            buff.SetUniqueID(numUnits);
-
-			nodeList.Add (buff.gameObject);            
+			List<FormationModel.positionData> returnList = new List<FormationModel.positionData>(positionsList.Values.ToList());
+			return returnList;
 		}
-
-
-		//Object placement
-		int index = 0;
-		for (int i = 0; i < lineCount; i++) 
+		else
 		{
-			for(int j = 0; j < lineCount; j++)
-			{
-				float transX = j * space;
-				float transZ = i * space;
-				Vector3 trans = new Vector3(transX, 0.2f, transZ);
-				nodeList[index].transform.localPosition = trans;
-				index++;
-			}
+			return positionsList.Values.ToList();
 		}
-		for (int i = 0; i < nodeCount; i++) 
-		{
-			Vector3 trans = new Vector3(-3f, 0f, -3f );
-			nodeList[i].transform.localPosition += trans; 
-		}
-	}*/
-	
-	// Update is called once per frame
-	void Update () 
+	}
+
+	public void Import(bool asNew, List<FormationModel.positionData> aList)
 	{
-	
+		
 	}
 }
