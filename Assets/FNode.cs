@@ -5,6 +5,11 @@ public class FNode : MonoBehaviour, IIdentification
 {
 	public int ID;
 
+	public void Pressed ()
+	{
+		transform.parent.SendMessage("NodePressed",ID); 
+	}
+
 	public void DragEnded(InputEventArgs e)
 	{
 		FinishedMoving ();
@@ -17,14 +22,14 @@ public class FNode : MonoBehaviour, IIdentification
 
 	private void FinishedMoving()
 	{
-		GetComponentInParent<Formation> ().UpdateFormationUnit (ID, transform.localPosition);
+		GetComponentInParent<IFormation> ().UpdateFormationUnit (ID, transform.localPosition);
 	}
 
 	public void OnDrag(InputEventArgs e)
 	{
+		//e.touchObject.
 		Vector2 moved = e.touchObject.position;
-		Debug.LogError ("OLA: " + moved);
-		Vector3 worldPos = Camera.main.ScreenToWorldPoint (moved);
+		Vector3 worldPos = e.touchCam.ScreenToWorldPoint (moved);
 		Vector3 localPos = transform.parent.InverseTransformPoint (worldPos);
 		localPos.y = 1;
 

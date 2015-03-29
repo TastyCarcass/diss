@@ -18,6 +18,12 @@ public class Formation : MonoBehaviour, IFormation
 	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
 	private List<FNode> nodesList = new List<FNode> ();
 
+
+	public void NodePressed(int ID)
+	{
+
+	}
+
 	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
 		//If new formation does not have the same amount of units.

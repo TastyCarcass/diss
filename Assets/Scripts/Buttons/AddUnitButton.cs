@@ -3,7 +3,10 @@ using System.Collections;
 
 public class AddUnitButton : MonoBehaviour 
 {
-	bool NewUnitMode;
+	public Formation mainForm;
+	public ShadowFormation shadowForm;
+
+	public CameraManager CamMgr;
 
 	public Camera mainCam;
 	public Camera editCam;
@@ -13,36 +16,16 @@ public class AddUnitButton : MonoBehaviour
 	public void Pressed(InputEventArgs e)
 	{
 		Debug.Log ("unit button pressed");
-		if(!NewUnitMode)
+		if(!CamMgr.editMode)
 		{
-			NewUnitMode = true;
-
-			editCam.gameObject.SetActive (true);
-			editGUI.gameObject.SetActive (true);
-			mainCam.gameObject.SetActive (false);
-			mainGUI.gameObject.SetActive (false);
+			CamMgr.ToggleCam();
+			shadowForm.Import (true, mainForm.Export(true));
 		}
 		else 
 		{
-			NewUnitMode = false; 
-
-			editCam.gameObject.SetActive (false);
-			editGUI.gameObject.SetActive (false);
-			mainCam.gameObject.SetActive (true);
-			mainGUI.gameObject.SetActive (true);
+			CamMgr.ToggleCam();
 		}
 	}
-
-	// Use this for initialization
-	public void Initialise () 
-	{
-		NewUnitMode = false;
-		editCam.gameObject.SetActive (false);
-		editGUI.gameObject.SetActive (false);
-		mainCam.gameObject.SetActive (true);
-		mainGUI.gameObject.SetActive (true);
-	}
-
 	// Update is called once per frame
 	void Update () 
 	{

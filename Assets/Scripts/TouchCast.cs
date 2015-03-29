@@ -28,6 +28,7 @@ public class TouchCast : MonoBehaviour
 
 	bool initialised = false;
 
+	public CameraManager camMgr;
 
 	// Use this for initialization
 	void Start ()
@@ -45,8 +46,8 @@ public class TouchCast : MonoBehaviour
 
 		ListCamera.OrderBy (Cam => Cam.depth );
 		ListCamera.Reverse ();
-
-		addUnitButton.Initialise ();
+		
+		camMgr.Initialise ();
 
 		initialised = true;
 
@@ -128,6 +129,8 @@ public class TouchCast : MonoBehaviour
 						InputEventArgs e = new InputEventArgs();
 						e.hitObject = hit.collider.gameObject;
 						e.touchObject = ourTouch;
+						e.touchCam = cam;
+
 
 						switch(ourTouch.phase)
 						{
@@ -158,118 +161,5 @@ public class TouchCast : MonoBehaviour
 				}
 			}
 		}
-//		
-//		if(initialised)
-//		{
-//		for (int i = 0; i<Input.touchCount; i++)
-//		{ 
-//			
-//			if(Input.GetTouch(i).phase == TouchPhase.Began)
-//			{
-//				// Ray for storing a point in space and a directional vector. 
-//				// ScreenPointToRay converts touch positions from the 2D space of the screen
-//				// to the 2D space of the world. 
-//				Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(i).position);
-//				RaycastHit hit;
-//
-//
-//
-//				if(Physics.Raycast(ray, out hit, Mathf.Infinity, touchMask))
-//				{
-//					//if ray intersected a collider and we are not already dragging
-//					//Debug.Log("began drag", i);
-//					Debug.Log(hit.collider.gameObject.name);
-//					Debug.Log(hit.point);
-//					SelectedObjects.Add(new RegisteredTouch(hit.transform.gameObject, i));
-//
-//
-////
-////					if (hit.collider.tag == "Draggable")
-////					{
-////						//theObjectCollection
-////						//A draggable object has been touched. 
-////						//sends a message to the game object to run 'Selected' function
-////
-////						SelectedObjects.Add(new SelectedObject(hit.transform.gameObject, i));
-////
-////						SelectedObjects[i].Node.SendMessage ("Selected");
-////
-////					}
-////					if (hit.collider.tag == "Rotatable")
-////					{
-////						//theObjectCollection
-////						//A draggable object has been touched. 
-////						//sends a message to the game object to run 'Selected' function
-////						
-////						SelectedObjects.Add(new SelectedObject(hit.transform.gameObject, i));
-////						SelectedObjects[i].Node.SendMessage ("Selected");
-////						rotatable = true;
-////						rotateID = i;
-////					}
-//				}
-//			}
-//			if(Input.GetTouch(i).phase == TouchPhase.Moved)
-//			{
-//
-//				 //Input.GetTouch(i).deltaTime
-//			}
-//			if(Input.GetTouch(i).phase == TouchPhase.Canceled)
-//			{
-//
-//			}
-////			if(Input.GetTouch(i).phase == TouchPhase.Began && rotatable)
-////			{
-////				int originLocation = CheckList(rotateID); 
-////				if(i!=originLocation)
-////				{
-////				//rotate object
-////				Debug.Log("Rotating");
-////				Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(i).position);
-////				RaycastHit hit;
-////
-////				Vector3 rotatePoint;
-////				Vector3 originPoint; 
-////				Vector3 rotateDir;
-////				Vector2 rotateDirection;
-////				originPoint = SelectedObjects[originLocation].GetPosition();
-////
-////
-////				if(Physics.Raycast(ray, out hit, Mathf.Infinity))
-////				{
-////					rotateDir = hit.point - originPoint;
-////					rotateDirection.x = rotateDir.x;
-////					rotateDirection.y = rotateDir.z;
-////					float angle = Mathf.Atan2(rotateDirection.x, rotateDirection.y) * Mathf.Rad2Deg;
-////					SelectedObjects[originLocation].Rotate(angle);
-////					Debug.Log(angle);
-////				}
-////				}
-//			if(Input.GetTouch(i).phase == TouchPhase.Moved)
-//			{
-//				//drag the object
-//				Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(i).position);
-//				RaycastHit hit;
-//				if(Physics.Raycast(ray, out hit, Mathf.Infinity))
-//				{
-//					if(hit.collider.tag == "Ground")
-//					{
-//						int selected = CheckList(i);
-//
-//						if(selected == i)
-//							SelectedObjects[selected].Move(hit.point);
-//					}
-//				}
-//			}
-//			if(Input.GetTouch(i).phase == TouchPhase.Ended)
-//			{
-//				int selected = CheckList(i);
-//				SelectedObjects[selected].Node.SendMessage ("Deselected");
-//				SelectedObjects.RemoveAt(selected);
-//
-//				rotatable = false;
-//			}
-//		}
-//	}
-//	}
 	}
 }

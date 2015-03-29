@@ -5,5 +5,5 @@ public class InputEventArgs
 {
 	public GameObject hitObject;
 	public Touch touchObject;
-	public GameObject newobj;
+	public Camera touchCam;
 }

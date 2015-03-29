@@ -9,4 +9,7 @@ public interface IFormation
 	
 	List<FormationModel.positionData> Export (bool asNew);
 
+	void UpdateFormationUnit(int ID, Vector3 LocalPos);
+
+	void NodePressed(int ID);
 }

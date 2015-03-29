@@ -3,8 +3,7 @@ using System.Collections;
 
 public class EditCamera : MonoBehaviour 
 {
-	public Formation form;
-
+	public ShadowFormation form;
 	void Pressed(InputEventArgs e)
 	{
 		//Logic to add unit to pressed position.
@@ -25,5 +24,6 @@ public class EditCamera : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+
 	}
 }
