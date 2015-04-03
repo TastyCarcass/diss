@@ -20,9 +20,9 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
 	private List<FNode> nodesList = new List<FNode> ();
 
-	bool addUnitsMode = false;
-	bool deleteUnitsMode = false;
-	
+	public bool addUnitsMode = false;
+	public bool deleteUnitsMode = false;
+
 	public void NodePressed(int ID)
 	{
 		if(deleteUnitsMode)
