@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 
 public class FormationData
 {
@@ -59,6 +60,11 @@ public class FormationData
 		List<List<FormationModel.positionData>> toUpdate = formations [numUnitsIndex];
 		toUpdate.RemoveAt (position);
 
+		if (toUpdate.Count <= 0)
+		{
+			formations.Remove(numUnitsIndex);
+		}
+
 		SaveFormations ();
 	}
 
@@ -74,6 +80,33 @@ public class FormationData
 		{
 			SetDefaultFormation();
 			LoadFormations();
+		}
+	}
+
+	public static List< List<FormationModel.positionData> > GetNextFormations(int current, int dir)
+	{
+		List<int> keys = formations.Keys.ToList ();
+
+		keys.Sort ();
+
+		int index = -1;
+
+		for (int i = 0; i < keys.Count; i++)
+		{
+			if ( keys[i] == current)
+			{
+				index = i;
+				break;
+			}
+		}
+
+		if (index + dir >= 0 && index + dir < keys.Count)
+		{
+			return formations[keys[index + dir]];
+		}
+		else
+		{
+			return (dir < 0) ? formations[keys[0]] : formations[keys[keys.Count - 1]];
 		}
 	}
 

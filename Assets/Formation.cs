@@ -31,7 +31,7 @@ public class Formation : MonoBehaviour, IFormation
 		if(true)
 		{
 			positionsDict = new Dictionary<int, FormationModel.positionData>();
-			for(int i = 0; i<nodesList.Count; i++)
+			for(int i = 0; i < nodesList.Count; i++)
 			{
 				GameObject obj = nodesList[i].gameObject;
 				nodesList[i] = null;
@@ -131,8 +131,6 @@ public class Formation : MonoBehaviour, IFormation
 
 		positionsDict.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
-
-		SaveFormationInfo ();
 	}
 
     public void AddNewUnit(Vector3 worldPos)
