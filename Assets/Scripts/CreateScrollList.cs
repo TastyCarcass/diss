@@ -40,10 +40,8 @@ public class CreateScrollList : MonoBehaviour
 
 	void Start()
 	{
-		Debug.Log ("Hoo");
 		if (formations != null)
 		{
-			Debug.Log("Hah");
 			for(int i = 0; i < formations.Count; i++)
 			{
 				AddNewButton (i);

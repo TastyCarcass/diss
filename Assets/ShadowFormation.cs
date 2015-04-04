@@ -172,7 +172,6 @@ public class ShadowFormation : MonoBehaviour, IFormation
 
 	public void Import (bool asNew, List<FormationModel.positionData> aList)
 	{
-		Debug.Log ("importing");
 		if(asNew)
 		{
 			SetFormation (aList);

@@ -9,7 +9,7 @@ using AssemblyCSharp;
 
 public class TouchCast : MonoBehaviour 
 {
-	public AddUnitButton addUnitButton;
+	public MainToEditModeToggle addUnitButton;
 	public LayerMask touchMask; // used for collisions, what 
 	//can and cannot be hit. 
 
