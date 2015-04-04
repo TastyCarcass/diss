@@ -30,9 +30,9 @@ public class Initialiser : MonoBehaviour
 			List< List<FormationModel.positionData> > listOfFormations = FormationData.Formations[index];
 			formationsBar.SetFormationEntries(listOfFormations);
 
-			//List<FormationModel.positionData> defaultFormation = listOfFormations [0];
+			List<FormationModel.positionData> defaultFormation = listOfFormations [0];
 
-			//formationRoot.SetFormation (0, defaultFormation);
+			formationRoot.SetFormation (0, defaultFormation);
 		}
 		else
 		{

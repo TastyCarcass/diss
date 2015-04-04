@@ -1,23 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ShadowFormation : MonoBehaviour, IFormation
 {	
-//	public Transform parentTrans;
-//	public FNode prefab;
-//	
-//	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
-//	private List<FNode> nodesList = new List<FNode> ();
-
 	private static int newUniqueIDNumber = 0;
 	
 	public Transform parentTrans;
 	public FNode prefab;
 
 	private int positionIndex = -1;
-	
-	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
+
+	public List<FormationModel.positionData> startPositionsList = new List<FormationModel.positionData>();
+	public Dictionary<int, FormationModel.positionData> positionsDictionary = new Dictionary<int, FormationModel.positionData>();
 	private List<FNode> nodesList = new List<FNode> ();
 
 	public bool addUnitsMode = false;
@@ -39,8 +35,6 @@ public class ShadowFormation : MonoBehaviour, IFormation
 			Vector3 realPos;
 			Vector2 camPos = e.touchObject.position;
 			realPos = e.touchCam.ScreenToWorldPoint (camPos);
-			Debug.Log("Add posish");
-			Debug.Log(realPos);
 			AddNewUnit (realPos);
 		}
 	}
@@ -74,42 +68,24 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	private void SetFormation(List<FormationModel.positionData> formation)
 	{
 		// TODO: Change to take bool parameter whether or not asNew from Import()
+	
+		startPositionsList.Clear();
+		positionsDictionary.Clear();
 
-		//If new formation does not have the same amount of units.
-		//if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
-		if(true)
+		for(int i = 0; i < nodesList.Count; i++)
 		{
-			positionsList = new Dictionary<int, FormationModel.positionData>();
-			for(int i = 0; i<nodesList.Count; i++)
-			{
-				GameObject obj = nodesList[i].gameObject;
-				nodesList[i] = null;
-				Destroy (obj);
-			}
-			
-			nodesList = new List<FNode>();
-
-			foreach(FormationModel.positionData cData in formation)
-			{
-				AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
-			}
+			GameObject obj = nodesList[i].gameObject;
+			nodesList[i] = null;
+			Destroy (obj);
 		}
-		else
+			
+		nodesList.Clear();
+
+		startPositionsList = new List<FormationModel.positionData>(formation);
+
+		foreach(FormationModel.positionData cData in formation)
 		{
-			//If it has the same amount of units
-			List<FormationModel.positionData> cData = new List<FormationModel.positionData>();
-			
-			foreach(FormationModel.positionData cData1 in positionsList.Values)
-			{
-				cData.Add(cData1);
-			}
-			
-			for (int i = 0; i < cData.Count; i++)
-			{
-				cData[i] = formation[i];
-				Vector3 newPos = new Vector3(cData[i].xPos, cData[i].yPos, cData[i].zPos);
-				nodesList[i].transform.localPosition = newPos;
-			}
+			AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
 		}
 	}
 	
@@ -121,12 +97,12 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	
 	public void UpdateFormationUnit(int id, Vector3 newPos)
 	{
-		if (positionsList.ContainsKey(id))
+		if (positionsDictionary.ContainsKey(id))
 		{
 			Debug.Log("Updating position of unreleased node");
-			positionsList[id].xPos = newPos.x;
-			positionsList[id].yPos = newPos.y;
-			positionsList[id].zPos = newPos.z;
+			positionsDictionary[id].xPos = newPos.x;
+			positionsDictionary[id].yPos = newPos.y;
+			positionsDictionary[id].zPos = newPos.z;
 		}
 	}
 	
@@ -144,18 +120,14 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		posData.yPos = localPos.y;
 		posData.zPos = localPos.z;
 		
-		positionsList.Add(buff.GetUniqueID(), posData);
+		positionsDictionary.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
 		
 		//SaveFormationInfo ();
 	}
 	
 	public void AddNewUnit(Vector3 worldPos)
-	{
-		// Set the transform to a local position
-		// Change the worldPos to localPos
-		// Using InverseTransformPoint of parent
-		
+	{	
 		Vector3 localPos = parentTrans.InverseTransformPoint(worldPos);
 		
 		localPos.y = 1; 
@@ -164,10 +136,22 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		
 	}
 
+	public void ResetFormation()
+	{
+		SetFormation (new List<FormationModel.positionData>(startPositionsList));
+	}
 
 	public List<FormationModel.positionData> Export(bool asNew)
 	{
-		return null;
+		if (asNew) 
+		{
+			List<FormationModel.positionData> returnList = new List<FormationModel.positionData>(positionsDictionary.Values.ToList());
+			return returnList;
+		}
+		else
+		{
+			return positionsDictionary.Values.ToList();
+		}
 	}
 
 	public void Import (bool asNew, List<FormationModel.positionData> aList)

@@ -1,4 +1,4 @@
-﻿//Author: Ian McLeod
+//Author: Ian McLeod
 //Purpose: The formation creation script. 
 using UnityEngine;
 using System.Collections;
@@ -15,7 +15,7 @@ public class Formation : MonoBehaviour, IFormation
 	private int numUnitsIndex = -1;
 	private int positionIndex = -1;
 
-	public Dictionary<int, FormationModel.positionData> positionsList = new Dictionary<int, FormationModel.positionData>();
+	public Dictionary<int, FormationModel.positionData> positionsDict = new Dictionary<int, FormationModel.positionData>();
 	private List<FNode> nodesList = new List<FNode> ();
 
 
@@ -30,7 +30,7 @@ public class Formation : MonoBehaviour, IFormation
 		//if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
 		if(true)
 		{
-			positionsList = new Dictionary<int, FormationModel.positionData>();
+			positionsDict = new Dictionary<int, FormationModel.positionData>();
 			for(int i = 0; i<nodesList.Count; i++)
 			{
 				GameObject obj = nodesList[i].gameObject;
@@ -54,7 +54,7 @@ public class Formation : MonoBehaviour, IFormation
 
 			List<FormationModel.positionData> cData = new List<FormationModel.positionData>();
 
-			foreach(FormationModel.positionData cData1 in positionsList.Values)
+			foreach(FormationModel.positionData cData1 in positionsDict.Values)
 			{
 				cData.Add(cData1);
 			}
@@ -78,7 +78,7 @@ public class Formation : MonoBehaviour, IFormation
 	{
 		List<FormationModel.positionData> newList = new List<FormationModel.positionData> ();
 		
-		foreach(FormationModel.positionData cData in positionsList.Values)
+		foreach(FormationModel.positionData cData in positionsDict.Values)
 		{
 			newList.Add(cData);
 		}
@@ -104,12 +104,12 @@ public class Formation : MonoBehaviour, IFormation
 
 	public void UpdateFormationUnit(int id, Vector3 newPos)
 	{
-		if (positionsList.ContainsKey(id))
+		if (positionsDict.ContainsKey(id))
 		{
 			Debug.Log("Updating position of unreleased node");
-			positionsList[id].xPos = newPos.x;
-			positionsList[id].yPos = newPos.y;
-			positionsList[id].zPos = newPos.z;
+			positionsDict[id].xPos = newPos.x;
+			positionsDict[id].yPos = newPos.y;
+			positionsDict[id].zPos = newPos.z;
 		}
 
 		SaveFormationInfo ();
@@ -129,7 +129,7 @@ public class Formation : MonoBehaviour, IFormation
 		posData.yPos = localPos.y;
 		posData.zPos = localPos.z;
 
-		positionsList.Add(buff.GetUniqueID(), posData);
+		positionsDict.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
 
 		SaveFormationInfo ();
@@ -153,17 +153,48 @@ public class Formation : MonoBehaviour, IFormation
 	{
 		if (asNew) 
 		{
-			List<FormationModel.positionData> returnList = new List<FormationModel.positionData>(positionsList.Values.ToList());
+			List<FormationModel.positionData> returnList = new List<FormationModel.positionData>(positionsDict.Values.ToList());
 			return returnList;
 		}
 		else
 		{
-			return positionsList.Values.ToList();
+			return positionsDict.Values.ToList();
 		}
 	}
 
 	public void Import(bool asNew, List<FormationModel.positionData> aList)
 	{
-		
+		if(asNew)
+		{
+			FormationModel newFormation = new FormationModel();
+			newFormation.numNodes = aList.Count;
+			newFormation.posList = aList;
+			
+			int newIndex = FormationData.AddNewFormation(newFormation);
+			
+			SetFormation(newIndex, aList);
+		}
+		else
+		{
+			if (aList.Count == numUnitsIndex)
+			{
+				SetFormation(positionIndex, aList);
+				SaveFormationInfo();
+			}
+			else
+			{
+				// Delete our formation entirely
+				// Recreate
+				FormationData.DeleteFormation(numUnitsIndex, positionIndex);
+				
+				FormationModel newFormation = new FormationModel();
+				newFormation.numNodes = aList.Count;
+				newFormation.posList = aList;
+				
+				int newIndex = FormationData.AddNewFormation(newFormation);
+				
+				SetFormation(newIndex, aList);
+			}
+		}
 	}
 }
