@@ -23,7 +23,23 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	{
 		if(deleteUnitsMode)
 		{
-			//do stuff
+			positionsDictionary.Remove(ID);
+
+			int index = -1;
+			for (int i = 0; i < nodesList.Count; i++)
+			{
+				if (nodesList[i].GetUniqueID() == ID)
+				{
+					index = i;
+					break;
+				}
+			}
+
+			GameObject del = nodesList[index].gameObject;
+
+			nodesList.Remove(nodesList[index]);
+
+			Destroy(del);
 		}
 	}
 
