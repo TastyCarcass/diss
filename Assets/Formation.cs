@@ -27,8 +27,7 @@ public class Formation : MonoBehaviour, IFormation
 	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
 		//If new formation does not have the same amount of units.
-		//if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
-		if(true)
+		if (numUnitsIndex !=  null && numUnitsIndex != formation.Count)
 		{
 			positionsDict = new Dictionary<int, FormationModel.positionData>();
 			for(int i = 0; i < nodesList.Count; i++)
@@ -49,6 +48,10 @@ public class Formation : MonoBehaviour, IFormation
 		}
 		else
 		{
+			// We need to do some hanky panky to move the current units we have
+			// To the most suitable positions.
+			// This is difficult and probably involves a lot of algorithm stuff
+
 			//If it has the same amount of units
 			positionIndex = _positionIndex;
 
