@@ -7,6 +7,7 @@ TagManager:
   - Draggable
   - Ground
   - Rotatable
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -17,9 +18,9 @@ TagManager:
   - 
   - 
   - Player
-  - Game
+  - Nodes
   - GUI
-  - 
+  - Soldier
   - 
   - 
   - 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Initialiser : MonoBehaviour
 {
 	public FormationsList formationsBar;
-	public CreateScrollList formationsBar2;
 	public Formation formationRoot;
 	public string SavedToken;
 	// Use this for initialization
