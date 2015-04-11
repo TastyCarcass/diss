@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
-
+using System.Collections;
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
     [RequireComponent(typeof (NavMeshAgent))]
     [RequireComponent(typeof (ThirdPersonCharacter))]
+
+
+
     public class AICharacterControl : MonoBehaviour
-    {
+	{
         public NavMeshAgent agent { get; private set; } // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         public Transform target; // target to aim for
@@ -51,11 +54,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
 
         }
-
-
+		
         public void SetTarget(Transform target)
         {
-            this.target = target;
-        }
+			this.target = target;
+		}
     }
 }
