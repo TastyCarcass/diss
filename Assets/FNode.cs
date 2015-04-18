@@ -28,7 +28,8 @@ public class FNode : MonoBehaviour, IIdentification
 	public void OnDrag(InputEventArgs e)
 	{
 		//e.touchObject.
-		Vector2 moved = e.touchObject.position;
+		Vector3 moved = e.touchObject.position;
+		moved.z = 15;
 		Vector3 worldPos = e.touchCam.ScreenToWorldPoint (moved);
 		Vector3 localPos = transform.parent.InverseTransformPoint (worldPos);
 		localPos.y = 1;

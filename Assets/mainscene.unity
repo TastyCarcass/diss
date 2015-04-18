@@ -1380,6 +1380,7 @@ GameObject:
   - 4: {fileID: 726597781}
   - 218: {fileID: 726597783}
   - 154: {fileID: 726597782}
+  - 114: {fileID: 726597784}
   m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
@@ -1442,6 +1443,18 @@ Terrain:
   m_BakeLightProbesForTrees: 1
   m_ScaleInLightmap: 1
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!114 &726597784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 726597780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1da80720965764089dcd6e57d6da27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tgt: {fileID: 1892226313}
 --- !u!1 &757937712
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,9 @@ public class Formation : MonoBehaviour, IFormation
 	private List<FNode> nodesList = new List<FNode> ();
 	private List<AICharacterControl> unitList = new List<AICharacterControl> ();
 
+	//Movement controls
+	Vector3 Target;
+	bool hasTarget = false;
 
 	public void NodePressed(int ID)
 	{
@@ -232,5 +235,35 @@ public class Formation : MonoBehaviour, IFormation
 				SetFormation(newIndex, aList);
 			}
 		}
+	}
+
+	public void FloorPressed(InputEventArgs e)
+	{
+		Vector2 moved = e.touchObject.position;
+		Vector3 worldPos = e.touchCam.ScreenToWorldPoint(new Vector3(moved.x, moved.y, 15));
+		Debug.LogError (worldPos);
+		worldPos.y = 0;
+		Target = worldPos;
+		hasTarget = true;
+	}
+
+	public void Move()
+	{
+		if(hasTarget)
+		{
+			Debug.LogError("We are moving");
+			float stride = 0.1f;
+			transform.position = Vector3.MoveTowards(transform.position, (Vector3)Target, stride);
+		
+			if(Vector3.Distance(transform.position, (Vector3)Target)<0.1f)
+			{
+				hasTarget = false;
+			}
+		}
+	}
+
+	public void Update()
+	{
+		Move();
 	}
 }

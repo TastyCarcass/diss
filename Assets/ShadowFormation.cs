@@ -47,6 +47,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	{
 		if(addUnitsMode)
 		{
+			Debug.LogError("Pressed");
 			//Logic to add unit to pressed position.
 			Vector3 realPos;
 			Vector2 camPos = e.touchObject.position;
