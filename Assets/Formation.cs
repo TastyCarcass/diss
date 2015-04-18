@@ -13,7 +13,7 @@ public class Formation : MonoBehaviour, IFormation
 
     public Transform parentTrans;
     public FNode prefab;
-	public AICharacterControl UnitPrefab;
+	public GameObject UnitPrefab;
 
 	private int numUnitsIndex = -1;
 	private int positionIndex = -1;
@@ -48,7 +48,7 @@ public class Formation : MonoBehaviour, IFormation
 			{
 				GameObject obj = unitList[i].gameObject;
 				unitList[i] = null;
-				Destroy(obj);
+				Destroy(obj.transform.parent.gameObject);
 			}
 
 			unitList = new List<AICharacterControl>();
@@ -167,7 +167,8 @@ public class Formation : MonoBehaviour, IFormation
 		positionsDict.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
 	
-		AICharacterControl unitBuff = Instantiate (UnitPrefab) as AICharacterControl;
+		GameObject unitthing = Instantiate (UnitPrefab) as GameObject;
+		AICharacterControl unitBuff = unitthing.transform.GetComponentInChildren<AICharacterControl> ();
 		unitBuff.transform.position = parentTrans.TransformPoint (localPos);
 		unitBuff.SetNodeTarget(buff.transform, buff.GetUniqueID());
 
@@ -247,12 +248,29 @@ public class Formation : MonoBehaviour, IFormation
 		hasTarget = true;
 	}
 
+	private float GetSlowestUnitMultiplier()
+	{
+		float unitSpeed = 3.5f;
+		float lowestSpeed = unitSpeed;
+
+		foreach(AICharacterControl cControl in unitList)
+		{
+			if (cControl.agent.speed < lowestSpeed)
+			{
+				lowestSpeed = cControl.agent.speed;
+			}
+		}
+
+		float percentDiff = lowestSpeed / unitSpeed;
+
+		return percentDiff > 0.2f ? percentDiff : 0.2f;
+	}
+
 	public void Move()
 	{
 		if(hasTarget)
 		{
-			Debug.LogError("We are moving");
-			float stride = 0.1f;
+			float stride = 0.1f * GetSlowestUnitMultiplier();
 			transform.position = Vector3.MoveTowards(transform.position, (Vector3)Target, stride);
 		
 			if(Vector3.Distance(transform.position, (Vector3)Target)<0.1f)

@@ -11,6 +11,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
     public class AICharacterControl : MonoBehaviour
 	{
+		public float normSpeed = 3.5f;
+		public float speedMultiplier = 1.0f;
+
         public NavMeshAgent agent { get; private set; } // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         public Transform target; // target to aim for
@@ -19,6 +22,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		//Added for project
 		public int nodeID;
 
+		public void OnCollisionEnter()
+		{
+			Debug.LogError ("We have entered");
+		}
+
+		public void Entered()
+		{
+			speedMultiplier = 0.5f;
+		}
+
+		public void Exited()
+		{
+			speedMultiplier = 1.0f;
+		}
         // Use this for initialization
         private void Start()
         {
@@ -54,6 +71,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				}
 				else
 				{
+					agent.speed = normSpeed * speedMultiplier;
                 	agent.SetDestination(target.position);
 				
                 	// use the values to move the character
