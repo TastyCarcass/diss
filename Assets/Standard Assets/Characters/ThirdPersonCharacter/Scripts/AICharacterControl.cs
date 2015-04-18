@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
     [RequireComponent(typeof (NavMeshAgent))]
@@ -14,29 +15,41 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         public Transform target; // target to aim for
 
+		private bool initialised = false;
+		//Added for project
+		public int nodeID;
+
         // Use this for initialization
         private void Start()
         {
-            // get the components on the object we need ( should not be null due to require component so no need to check )
-            agent = GetComponentInChildren<NavMeshAgent>();
-            character = GetComponent<ThirdPersonCharacter>();
+			if (!initialised)
+			{
+	            // get the components on the object we need ( should not be null due to require component so no need to check )
+	            agent = GetComponentInChildren<NavMeshAgent>();
+	            character = GetComponent<ThirdPersonCharacter>();
 
-	        agent.updateRotation = false;
-	        agent.updatePosition = true;
+		        agent.updateRotation = false;
+		        agent.updatePosition = true;
+			}
         }
 
 
         // Update is called once per frame
         private void Update()
         {
+			if (!initialised)
+			{
+				Start ();
+			}
+
             if (target != null)
             {
-
 				//Added for project: Stop at target
 				float distance = Vector3.Distance(character.transform.position, target.transform.position);
-				
+
 				if(distance < 1f)
 				{
+					agent.SetDestination(target.position);
 					character.Move(Vector3.zero, false, false);
 				}
 				else
@@ -55,9 +68,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         }
 		
-        public void SetTarget(Transform target)
-        {
-			this.target = target;
+
+		public void SetNodeTarget (Transform _targetNode, int nodeId)
+		{
+			target = _targetNode;
+			nodeID = nodeId;
 		}
     }
 }

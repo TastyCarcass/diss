@@ -51,6 +51,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 			Vector3 realPos;
 			Vector2 camPos = e.touchObject.position;
 			realPos = e.touchCam.ScreenToWorldPoint (camPos);
+
 			AddNewUnit (realPos);
 		}
 	}
@@ -145,8 +146,8 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	public void AddNewUnit(Vector3 worldPos)
 	{	
 		Vector3 localPos = parentTrans.InverseTransformPoint(worldPos);
-		
-		localPos.y = 1; 
+
+		localPos.y = 0; 
 		
 		AddFormationUnit (localPos);
 		

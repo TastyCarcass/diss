@@ -29,22 +29,32 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		bool initialised = false;
 
 		void Start()
 		{
-			m_Animator = GetComponent<Animator>();
-			m_Rigidbody = GetComponent<Rigidbody>();
-			m_Capsule = GetComponent<CapsuleCollider>();
-			m_CapsuleHeight = m_Capsule.height;
-			m_CapsuleCenter = m_Capsule.center;
+			if (!initialised)
+			{
+				m_Animator = GetComponent<Animator>();
+				m_Rigidbody = GetComponent<Rigidbody>();
+				m_Capsule = GetComponent<CapsuleCollider>();
+				m_CapsuleHeight = m_Capsule.height;
+				m_CapsuleCenter = m_Capsule.center;
 
-			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+				m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+				m_OrigGroundCheckDistance = m_GroundCheckDistance;
+
+				initialised = true;
+			}
 		}
 
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
+			if (!initialised)
+			{
+				Start();
+			}
 
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired

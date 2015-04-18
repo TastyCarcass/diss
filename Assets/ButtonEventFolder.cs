@@ -14,7 +14,7 @@ public class ButtonEventFolder : MonoBehaviour
 		}
 		catch(Exception e)
 		{
-			Debug.LogError("target or methodname wasn't supplied");
+			Debug.LogError(e.ToString() + " target or methodname wasn't supplied");
 		}
 	}
 }
