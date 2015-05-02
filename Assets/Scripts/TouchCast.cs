@@ -30,7 +30,9 @@ public class TouchCast : MonoBehaviour
 
 	public CameraManager camMgr;
 
-	// Use this for initialization
+	public GestureRecogniser GesRec;
+
+
 	void Start ()
 	{
 		for (int i = 0; i < RegisteredTouches.Length; i++)
@@ -161,5 +163,9 @@ public class TouchCast : MonoBehaviour
 				}
 			}
 		}
+	}
+	public string stringToEdit = "Hello World";
+	void OnGUI() {
+		stringToEdit = GUI.TextField(new Rect(10, 10, 200, 20), stringToEdit, 25);
 	}
 }

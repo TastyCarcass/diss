@@ -13,16 +13,17 @@ public class SoldierEnvColl : MonoBehaviour {
 
 	public void OnTriggerExit()
 	{
-		Debug.LogError ("Fucks given");
 		cController.Exited();
 	}
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 		transform.localPosition = cController.transform.localPosition;
 	}
 }

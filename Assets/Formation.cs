@@ -238,7 +238,7 @@ public class Formation : MonoBehaviour, IFormation
 		}
 	}
 
-	public void FloorPressed(InputEventArgs e)
+	public void FloorTapped(InputEventArgs e)
 	{
 		Vector2 moved = e.touchObject.position;
 		Vector3 worldPos = e.touchCam.ScreenToWorldPoint(new Vector3(moved.x, moved.y, 15));
