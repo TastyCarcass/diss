@@ -1,11 +1,12 @@
-//Author: Ian McLeod
-//Purpose: The formation creation script. 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityStandardAssets.Characters.ThirdPerson;
 
+//Title: Formation
+//Purpose: The formation manager.
+//Is also capable of exporting and importing to the shadow formation.
 
 public class Formation : MonoBehaviour, IFormation
 {
@@ -28,8 +29,8 @@ public class Formation : MonoBehaviour, IFormation
 
 	public void NodePressed(int ID)
 	{
-
-	}
+		//Called if a node is pressed.
+	} // Node Pressed
 
 	public void SetFormation(int _positionIndex, List<FormationModel.positionData> formation)
 	{
@@ -42,14 +43,14 @@ public class Formation : MonoBehaviour, IFormation
 				GameObject obj = nodesList[i].gameObject;
 				nodesList[i] = null;
 				Destroy (obj);
-			}
+			} // for loop
 
 			for (int i = 0; i < unitList.Count; i++)
 			{
 				GameObject obj = unitList[i].gameObject;
 				unitList[i] = null;
 				Destroy(obj.transform.parent.gameObject);
-			}
+			} // for loop
 
 			unitList = new List<AICharacterControl>();
 			nodesList = new List<FNode>();
@@ -59,14 +60,10 @@ public class Formation : MonoBehaviour, IFormation
 			foreach(FormationModel.positionData cData in formation)
 			{
 				AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
-			}
-		}
+			} // for loop
+		} // if
 		else
 		{
-			// We need to do some hanky panky to move the current units we have
-			// To the most suitable positions.
-			// This is difficult and probably involves a lot of algorithm stuff
-
 			//If it has the same amount of units
 			positionIndex = _positionIndex;
 
@@ -75,39 +72,40 @@ public class Formation : MonoBehaviour, IFormation
 			foreach(FormationModel.positionData cData1 in positionsDict.Values)
 			{
 				cData.Add(cData1);
-			}
+			} // for each
 
 			for (int i = 0; i < cData.Count; i++)
 			{
 				cData[i] = formation[i];
 				Vector3 newPos = new Vector3(cData[i].xPos, cData[i].yPos, cData[i].zPos);
 				nodesList[i].transform.localPosition = newPos;
-			}
+			} // for loop
 
 			for (int i = 0; i < nodesList.Count; i++)
 			{
 				unitList[i].SetNodeTarget(nodesList[i].transform, nodesList[i].GetUniqueID());
-			}
-		}
-	}
+			} // for loop
+		} //else
+	} //Set Formation
 
 	public static int GetNewUniqueID()
 	{
 		newUniqueIDNumber++;
 		return newUniqueIDNumber;
-	}
+	} //Get new unique ID
 
 	public Transform GetNodeFromID(int otherID)
 	{
+		//Returns the position of the node with the correct ID.
 		for(int i = 0; i < nodesList.Count; i++)
 		{
 			if(nodesList[i].GetUniqueID() == otherID)
 			{
 				return nodesList[i].transform;
-			}
-		}
+			} //if
+		} //for
 		return null;
-	}
+	}//Get Node from ID
 
 	public void SaveFormationInfo()
 	{
@@ -116,12 +114,12 @@ public class Formation : MonoBehaviour, IFormation
 		foreach(FormationModel.positionData cData in positionsDict.Values)
 		{
 			newList.Add(cData);
-		}
+		} //foreach
 		
 		if (numUnitsIndex == newList.Count)
 		{
 			FormationData.UpdateFormation (numUnitsIndex, positionIndex, newList);
-		}
+		} //if
 		else
 		{
 			FormationData.DeleteFormation(numUnitsIndex, positionIndex);
@@ -134,8 +132,8 @@ public class Formation : MonoBehaviour, IFormation
 
 			numUnitsIndex = newList.Count;
 			positionIndex = newIndex;
-		}
-	}
+		} //else
+	} // Save formation info
 
 	public void UpdateFormationUnit(int id, Vector3 newPos)
 	{
@@ -145,35 +143,37 @@ public class Formation : MonoBehaviour, IFormation
 			positionsDict[id].xPos = newPos.x;
 			positionsDict[id].yPos = newPos.y;
 			positionsDict[id].zPos = newPos.z;
-		}
+		} //if
 
 		SaveFormationInfo ();
-	}
+	} //Update formation info
 
 	public void AddFormationUnit(Vector3 localPos)
 	{	
-		FNode buff = Instantiate(prefab) as FNode;
+		FNode buff = Instantiate(prefab) as FNode; // Buff of a node
 		buff.transform.parent = parentTrans;
 	
-		buff.SetUniqueID(GetNewUniqueID());
+		buff.SetUniqueID(GetNewUniqueID()); // Set ID of node.
 
-		buff.transform.localPosition = localPos;
+		buff.transform.localPosition = localPos; //Set node position
 
+		// setup data for dictionary
 		FormationModel.positionData posData = new FormationModel.positionData ();
 		posData.xPos = localPos.x;
 		posData.yPos = localPos.y;
 		posData.zPos = localPos.z;
-
-		positionsDict.Add(buff.GetUniqueID(), posData);
-		nodesList.Add (buff);
+		
+		positionsDict.Add(buff.GetUniqueID(), posData); //Add to dictionary
+		nodesList.Add (buff); //Add to nodelist
 	
+		// Create unit
 		GameObject unitthing = Instantiate (UnitPrefab) as GameObject;
 		AICharacterControl unitBuff = unitthing.transform.GetComponentInChildren<AICharacterControl> ();
 		unitBuff.transform.position = parentTrans.TransformPoint (localPos);
 		unitBuff.SetNodeTarget(buff.transform, buff.GetUniqueID());
 
 		unitList.Add (unitBuff);
-	}
+	}	//Add formation unit
 
     public void AddNewUnit(Vector3 worldPos)
 	{
@@ -187,7 +187,7 @@ public class Formation : MonoBehaviour, IFormation
 
 		AddFormationUnit (localPos);
         
-    }
+    } // Adds a new unit.
 
 	public List<FormationModel.positionData> Export(bool asNew)
 	{
@@ -195,12 +195,12 @@ public class Formation : MonoBehaviour, IFormation
 		{
 			List<FormationModel.positionData> returnList = new List<FormationModel.positionData>(positionsDict.Values.ToList());
 			return returnList;
-		}
+		} //if
 		else
 		{
 			return positionsDict.Values.ToList();
-		}
-	}
+		} //else
+	} // Export
 
 	public void Import(bool asNew, List<FormationModel.positionData> aList)
 	{
@@ -213,14 +213,14 @@ public class Formation : MonoBehaviour, IFormation
 			int newIndex = FormationData.AddNewFormation(newFormation);
 			
 			SetFormation(newIndex, aList);
-		}
+		} // IF
 		else
 		{
 			if (aList.Count == numUnitsIndex)
 			{
 				SetFormation(positionIndex, aList);
 				SaveFormationInfo();
-			}
+			} // If
 			else
 			{
 				// Delete our formation entirely
@@ -234,9 +234,9 @@ public class Formation : MonoBehaviour, IFormation
 				int newIndex = FormationData.AddNewFormation(newFormation);
 				
 				SetFormation(newIndex, aList);
-			}
-		}
-	}
+			} // Else
+		} // Else
+	} // Import
 
 	public void FloorPressed(InputEventArgs e)
 	{
@@ -246,10 +246,11 @@ public class Formation : MonoBehaviour, IFormation
 		worldPos.y = 0;
 		Target = worldPos;
 		hasTarget = true;
-	}
+	} //Floor Pressed
 
 	private float GetSlowestUnitMultiplier()
 	{
+		//Finds the speed of the slowest unit. 
 		float unitSpeed = 3.5f;
 		float lowestSpeed = unitSpeed;
 
@@ -264,17 +265,19 @@ public class Formation : MonoBehaviour, IFormation
 		float percentDiff = lowestSpeed / unitSpeed;
 
 		return percentDiff > 0.2f ? percentDiff : 0.2f;
-	}
+	} // GetSlowestUnitMultiplier
 
 	public void Move()
 	{
+		//If there is a target, move towards it.
 		if(hasTarget)
 		{
 			float stride = 0.1f * GetSlowestUnitMultiplier();
 			transform.position = Vector3.MoveTowards(transform.position, (Vector3)Target, stride);
 		
 			if(Vector3.Distance(transform.position, (Vector3)Target)<0.1f)
-			{
+			{ 
+				//arrived 
 				hasTarget = false;
 			}
 		}
@@ -282,6 +285,7 @@ public class Formation : MonoBehaviour, IFormation
 
 	public void Update()
 	{
+		//Move is called every frame. 
 		Move();
-	}
+	} //Update
 }

@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//Title: Initialiser
+//Upon loading the game, this is used for the formation.
 public class Initialiser : MonoBehaviour
 {
-	public FormationsList formationsBar;
-	public Formation formationRoot;
-	public string SavedToken;
+	public FormationsList formationsBar; // The list of formations
+	public Formation formationRoot; //The formation to alter
 	// Use this for initialization
 
 	void Start () 
