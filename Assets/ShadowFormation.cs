@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// Title: Shadow Formation
+// Purpose: This is the formation used by the edit mode.
+// It behaves similarly to the main formation. However, it does not 
+// create units. 
+// It acts as a buffer for uncommitted changes. Upon pressing the update
+// formation button, those changes are exported to the main formation.
 public class ShadowFormation : MonoBehaviour, IFormation
 {	
 	private static int newUniqueIDNumber = 0;
@@ -23,9 +29,12 @@ public class ShadowFormation : MonoBehaviour, IFormation
 	{
 		if(deleteUnitsMode)
 		{
+			//If a node has been pressed and we are in delete units mode
+			// Remove it from dictionary
 			positionsDictionary.Remove(ID);
 
 			int index = -1;
+			// Find node with thsi ID
 			for (int i = 0; i < nodesList.Count; i++)
 			{
 				if (nodesList[i].GetUniqueID() == ID)
@@ -34,14 +43,16 @@ public class ShadowFormation : MonoBehaviour, IFormation
 					break;
 				}
 			}
-
+			// obtain a reference to deleted object
 			GameObject del = nodesList[index].gameObject;
 
+			// Remove from list
 			nodesList.Remove(nodesList[index]);
 
+			// delete it
 			Destroy(del);
 		}
-	}
+	} //Node Pressed
 
 	public void FloorPressed(InputEventArgs e)
 	{
@@ -55,7 +66,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 
 			AddNewUnit (realPos);
 		}
-	}
+	} // Floor Pressed
 
 	public void AddUnitButtonPressed()
 	{
@@ -68,7 +79,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 			addUnitsMode = true;
 			deleteUnitsMode = false;
 		}
-	}
+	} //Add Unit Button Pressed
 
 	public void DeleteUnitButtonPressed()
 	{
@@ -81,12 +92,10 @@ public class ShadowFormation : MonoBehaviour, IFormation
 			deleteUnitsMode = true;
 			addUnitsMode = false;
 		}		
-	}
+	} //Delete Unit Button Pressed
 
 	private void SetFormation(List<FormationModel.positionData> formation)
 	{
-		// TODO: Change to take bool parameter whether or not asNew from Import()
-	
 		startPositionsList.Clear();
 		positionsDictionary.Clear();
 
@@ -105,13 +114,13 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		{
 			AddFormationUnit(new Vector3(cData.xPos, cData.yPos, cData.zPos));
 		}
-	}
+	} // Set Formation
 	
 	public static int GetNewUniqueID()
 	{
 		newUniqueIDNumber++;
 		return newUniqueIDNumber;
-	}
+	} //Get New Unique ID
 	
 	public void UpdateFormationUnit(int id, Vector3 newPos)
 	{
@@ -122,12 +131,12 @@ public class ShadowFormation : MonoBehaviour, IFormation
 			positionsDictionary[id].yPos = newPos.y;
 			positionsDictionary[id].zPos = newPos.z;
 		}
-	}
+	} //Update Formation Unit
 	
 	public void AddFormationUnit(Vector3 localPos)
 	{	
-		FNode buff = Instantiate(prefab) as FNode;
-		buff.transform.parent = parentTrans;
+		FNode buff = Instantiate(prefab) as FNode; //Buffer node
+		buff.transform.parent = parentTrans; 
 		
 		buff.SetUniqueID(GetNewUniqueID());
 		
@@ -140,9 +149,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		
 		positionsDictionary.Add(buff.GetUniqueID(), posData);
 		nodesList.Add (buff);
-		
-		//SaveFormationInfo ();
-	}
+	} //Add Formation Unit
 	
 	public void AddNewUnit(Vector3 worldPos)
 	{	
@@ -152,12 +159,12 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		
 		AddFormationUnit (localPos);
 		
-	}
+	} //Add New Unit
 
 	public void ResetFormation()
 	{
 		SetFormation (new List<FormationModel.positionData>(startPositionsList));
-	}
+	} //Reset Formation
 
 	public List<FormationModel.positionData> Export(bool asNew)
 	{
@@ -170,7 +177,7 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		{
 			return positionsDictionary.Values.ToList();
 		}
-	}
+	} // export
 
 	public void Import (bool asNew, List<FormationModel.positionData> aList)
 	{
@@ -182,5 +189,5 @@ public class ShadowFormation : MonoBehaviour, IFormation
 		{
 			SetFormation (aList);
 		}
-	}
+	} // Import
 }
